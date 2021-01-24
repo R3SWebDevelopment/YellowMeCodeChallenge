@@ -52,10 +52,21 @@ def list_urls():
     ]
     :return:
     """
-    print(dir(request))
-    print(request.host_url)
-    print(request.host)
-    return "HOLA GET"
+
+    request.host_url
+    response = []
+    db = get_db()
+    items = db.execute(
+        'SELECT name, shorted_id FROM shorted_url'
+    ).fetchall()
+    for item in items:
+        response.append(
+            {
+                "name": item['name'],
+                "urk": "{}{}".format(request.host_url, item['shorted_id'])
+            }
+        )
+    return jsonify(response)
 
 
 @bp.route('/<shorted_url>', methods=['GET'])

@@ -1,7 +1,9 @@
 DROP TABLE IF EXISTS shorted_url;
 
-CREATE TABLE user (
+CREATE TABLE shorted_url (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
   url TEXT UNIQUE NOT NULL,
-  shorted TEXT NOT NULL
+  shorted_url TEXT NOT NULL,
+  shorted_id TEXT NOT NULL
 );

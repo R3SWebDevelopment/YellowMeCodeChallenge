@@ -25,7 +25,7 @@ export default class Listing extends React.Component {
     }
 
     render(){
-        let urls = this.state['urls'];
+        let urls = this.props['urls'];
         let previewURL = this.state['previewURL'];
         return (
             <div id="listing">
@@ -41,7 +41,7 @@ export default class Listing extends React.Component {
                             urls.map(
                                 (item, index) => (
                                     <li id={index} key={index}>
-                                        {item.name} - <a href={item.url} onClick={this.displayPreview}>{item.url}</a>
+                                        {item.name} - <a href={item.url} target={"_blank"}>{item.url}</a>
                                     </li>
                                 )
                             )

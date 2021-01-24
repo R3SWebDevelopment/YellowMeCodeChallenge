@@ -6,24 +6,29 @@ class App extends React.Component{
 
   constructor(props) {
     super(props);
-    let urls = [
-      {
-        name: "Google",
-        url: "https://www.google.com"
-      },
-      {
-        name: "Facebook",
-        url: "https://www.facebook.com"
-      },
-      {
-        name: "Youtube",
-        url: "https://www.youtube.com"
-      },
-    ]
+    let urls = [];
 
     this.state = {
       urls: urls
     }
+
+    this.fetchURLs = this.fetchURLs.bind(this);
+  }
+
+  fetchURLs(){
+    fetch('http://127.0.0.1:5000/', {
+      'mode': 'cors',
+      'headers': {
+        'Access-Control-Allow-Origin': '*',
+      },
+      crossDomain: true,
+    })
+        .then(response => response.json())
+        .then(data => this.setState({ urls: data }));
+  }
+
+  componentDidMount() {
+    this.fetchURLs();
   }
 
   render(){

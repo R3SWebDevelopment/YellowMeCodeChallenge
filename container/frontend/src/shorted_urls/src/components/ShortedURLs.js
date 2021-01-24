@@ -13,8 +13,9 @@ export default class ShortedURLs extends React.Component {
     }
 
 
-    render(){
-        let urls = this.state['urls'];
+    render(props){
+
+        let urls = this.props['urls'];
         return (
             <div>
                 <Input />

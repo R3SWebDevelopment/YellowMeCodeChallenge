@@ -5,6 +5,7 @@ from flask import (
     abort,
     request,
     jsonify,
+    redirect,
 )
 from .db import get_db
 from .utils import make_tiny
@@ -53,7 +54,6 @@ def list_urls():
     :return:
     """
 
-    request.host_url
     response = []
     db = get_db()
     items = db.execute(
@@ -77,4 +77,11 @@ def detail_url(shorted_url=None):
     :param shorted_url:
     :return:
     """
-    pass
+    db = get_db()
+    item = db.execute(
+        'SELECT url FROM shorted_url WHERE shorted_id = ?',
+        (shorted_url, )
+    ).fetchone()
+    if item is None:
+        abort(404, "URL Not Found")
+    return redirect(item['url'], code=302)

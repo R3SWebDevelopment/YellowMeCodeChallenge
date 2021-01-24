@@ -8,7 +8,10 @@ from flask import (
     redirect,
 )
 from .db import get_db
-from .utils import make_tiny
+from .utils import (
+    make_tiny,
+    get_parameters,
+)
 
 bp = Blueprint('Shorted URL', __name__, url_prefix='/')
 
@@ -19,7 +22,7 @@ def add_url():
     This view receives a URL and Name, the URL is shorted and added to the list
     :return: The Shorted URL
     """
-    data = request.json or {}
+    data = request.json or get_parameters(request.get_data())
     name = data.get('name', None)
     url = data.get('url', None)
     if name is None or url is None:
@@ -28,11 +31,14 @@ def add_url():
     shorted_url_id = shorted_url.replace("https://tinyurl.com/", "")
 
     db = get_db()
-    db.execute(
-        'INSERT INTO shorted_url (name, url, shorted_url, shorted_id) VALUES (?, ?, ?, ?)',
-        (name, url, shorted_url, shorted_url_id)
-    )
-    db.commit()
+    try:
+        db.execute(
+            'INSERT INTO shorted_url (name, url, shorted_url, shorted_id) VALUES (?, ?, ?, ?)',
+            (name, url, shorted_url, shorted_url_id)
+        )
+        db.commit()
+    except:
+        abort(500, "Duplicated not Allow")
 
     response = {
         "name": name,
@@ -63,7 +69,7 @@ def list_urls():
         response.append(
             {
                 "name": item['name'],
-                "urk": "{}{}".format(request.host_url, item['shorted_id'])
+                "url": "{}{}".format(request.host_url, item['shorted_id'])
             }
         )
     return jsonify(response)

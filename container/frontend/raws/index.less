@@ -1,0 +1,91 @@
+html{
+  padding: 0px;
+  margin: 0px;
+  width: 100vw;
+  height: 100vh;
+}
+
+div{
+  padding: 0px;
+  margin: 0px;
+}
+
+div#input{
+  position: relative;
+  height: 25vh;
+
+  & > div#title{
+    position: relative;
+    text-align: center;
+    height: 25px;
+  }
+
+  & > div#forms{
+    position: relative;
+    height: calc(100% - 25px);
+    width: 100%;
+
+    & > div.form{
+      position: relative;
+      height: 100%;
+      width: 33%;
+      margin: 0px 4px;
+      float: left;
+    }
+
+  }
+
+}
+
+div#listing{
+  position: relative;
+  height: 75vh;
+  width: 100vw;
+
+  & > div#urls{
+    position: relative;
+    padding: 0px;
+    height: 100%;
+    width: 25vw;
+    float: left;
+
+    & > div#title{
+      margin: 0px;
+      position: relative;
+      text-align: center;
+      width: 100%;
+      height: 22px;
+    }
+
+    & > div#list{
+      margin-top: 5px;
+      margin: 0px;
+      position: relative;
+      text-align: center;
+      width: 100%;
+      height: calc(95% - 22px);
+    }
+  }
+
+  & > div#preview{
+    position: relative;
+    height: 100%;
+    width: 75vw;
+    float: left;
+
+    & > div#title{
+      position: relative;
+      text-align: center;
+      height: 25px;
+    }
+
+    & > div#view{
+      margin-top: 5px;
+      margin: 0px;
+      position: relative;
+      text-align: center;
+      width: 100%;
+      height: calc(95% - 22px);
+    }
+  }
+}

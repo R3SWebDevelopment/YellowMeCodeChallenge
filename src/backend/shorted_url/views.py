@@ -1,6 +1,13 @@
 from flask import (
     Blueprint
 )
+from flask import (
+    abort,
+    request,
+    jsonify,
+)
+from .db import get_db
+from .utils import make_tiny
 
 bp = Blueprint('Shorted URL', __name__, url_prefix='/')
 
@@ -11,7 +18,26 @@ def add_url():
     This view receives a URL and Name, the URL is shorted and added to the list
     :return: The Shorted URL
     """
-    return "HOLA POST"
+    data = request.json or {}
+    name = data.get('name', None)
+    url = data.get('url', None)
+    if name is None or url is None:
+        abort(500, "Bad Parameters")
+    shorted_url = make_tiny(url=url)
+    shorted_url_id = shorted_url.replace("https://tinyurl.com/", "")
+
+    db = get_db()
+    db.execute(
+        'INSERT INTO shorted_url (name, url, shorted_url, shorted_id) VALUES (?, ?, ?, ?)',
+        (name, url, shorted_url, shorted_url_id)
+    )
+    db.commit()
+
+    response = {
+        "name": name,
+        "url": "{}{}".format(request.host_url, shorted_url_id)
+    }
+    return jsonify(response)
 
 
 @bp.route('/', methods=['GET'])
@@ -26,6 +52,9 @@ def list_urls():
     ]
     :return:
     """
+    print(dir(request))
+    print(request.host_url)
+    print(request.host)
     return "HOLA GET"
 
 

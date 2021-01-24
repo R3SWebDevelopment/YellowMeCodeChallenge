@@ -1,0 +1,8 @@
+version: '2'
+services:
+  backend:
+    build: backend
+    ports:
+      - "5000:5000"
+    command: >
+      bash -c "ls -ltr ../ && ls -ltr && export FLASK_APP=shorted_url && export FLASK_ENV=development && flask run --host=0.0.0.0"

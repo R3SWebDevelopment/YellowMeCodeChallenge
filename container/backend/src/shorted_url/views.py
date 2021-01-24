@@ -7,7 +7,9 @@ from flask import (
     jsonify,
     redirect,
 )
-from .db import get_db
+from .db import (
+    get_db,
+)
 from .utils import (
     make_tiny,
     get_parameters,

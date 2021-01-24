@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from . import views
+from . import db
 
 
 def create_app(test_config=None):
@@ -11,7 +12,7 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
-    print("HOLA")
+
     if test_config is None:
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)
@@ -26,5 +27,6 @@ def create_app(test_config=None):
         pass
 
     app.register_blueprint(views.bp)
+    db.init_app(app)
 
     return app

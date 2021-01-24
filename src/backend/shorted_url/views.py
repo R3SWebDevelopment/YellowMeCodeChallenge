@@ -1,17 +1,20 @@
-from flask import Flask
-app = Flask(__name__)
+from flask import (
+    Blueprint
+)
+
+bp = Blueprint('Shorted URL', __name__, url_prefix='/')
 
 
-@app.route('/', methods=['POST'])
+@bp.route('/', methods=['POST'])
 def add_url():
     """
     This view receives a URL and Name, the URL is shorted and added to the list
     :return: The Shorted URL
     """
-    pass
+    return "HOLA POST"
 
 
-@app.route('/', methods=['GET'])
+@bp.route('/', methods=['GET'])
 def list_urls():
     """
     This view list all the shorted URL stored on the following format
@@ -23,10 +26,10 @@ def list_urls():
     ]
     :return:
     """
-    pass
+    return "HOLA GET"
 
 
-@app.route('/<shorted_url>', methods=['GET'])
+@bp.route('/<shorted_url>', methods=['GET'])
 def detail_url(shorted_url=None):
     """
     This view received a shorted_url, look it for on the stored list, if exists redirect to the actual URL otherwise

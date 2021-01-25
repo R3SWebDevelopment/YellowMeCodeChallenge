@@ -49,16 +49,6 @@ export default class Listing extends React.Component {
                         </ul>
                     </div>
                 </div>
-                <div id="preview">
-                    <div id="title">
-                        <h3>
-                            Preview
-                        </h3>
-                    </div>
-                    <div id="view">
-                        <iframe id="preview-iframe" src={previewURL} width="95%" height="300px" />
-                    </div>
-                </div>
             </div>
         );
     }

@@ -14,11 +14,11 @@ export default class ShortedURLs extends React.Component {
 
 
     render(props){
-
         let urls = this.props['urls'];
+        let refreshAction = this.props['refreshAction'];
         return (
             <div>
-                <Input />
+                <Input refreshAction={refreshAction} />
                 <Listing urls={urls}/>
             </div>
         );

@@ -34,7 +34,7 @@ class App extends React.Component{
   render(){
     let urls = this.state['urls'];
     return (
-        <ShortedURLs urls={urls}/>
+        <ShortedURLs urls={urls} refreshAction={this.fetchURLs} />
     );
   }
 

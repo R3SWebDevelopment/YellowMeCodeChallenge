@@ -27,25 +27,43 @@ def add_url():
     data = request.json or get_parameters(request.get_data())
     name = data.get('name', None)
     url = data.get('url', None)
-    if name is None or url is None:
+    urls = data.get('urls', [])
+    if len(urls) == 0 and (name is None or url is None):
         abort(500, "Bad Parameters")
-    shorted_url = make_tiny(url=url)
-    shorted_url_id = shorted_url.replace("https://tinyurl.com/", "")
-
-    db = get_db()
-    try:
-        db.execute(
-            'INSERT INTO shorted_url (name, url, shorted_url, shorted_id) VALUES (?, ?, ?, ?)',
-            (name, url, shorted_url, shorted_url_id)
+    is_raise_allows = len(urls) == 0
+    if is_raise_allows:
+        urls.append(
+            {
+                "name": name,
+                "url": url
+            }
         )
-        db.commit()
-    except:
-        abort(500, "Duplicated not Allow")
+    response_data = []
+    for item in urls:
+        item_url = item.get('url', None)
+        item_name = item.get('url', None)
+        if item_url is not None and item_name is not None:
+            shorted_url = make_tiny(url=item_url)
+            shorted_url_id = shorted_url.replace("https://tinyurl.com/", "")
 
-    response = {
-        "name": name,
-        "url": "{}{}".format(request.host_url, shorted_url_id)
-    }
+            db = get_db()
+            try:
+                db.execute(
+                    'INSERT INTO shorted_url (name, url, shorted_url, shorted_id) VALUES (?, ?, ?, ?)',
+                    (item_name, item_url, shorted_url, shorted_url_id)
+                )
+                db.commit()
+                response_data.append(
+                    {
+                        "name": item_name,
+                        "url": "{}{}".format(request.host_url, shorted_url_id)
+                    }
+                )
+            except:
+                if is_raise_allows:
+                    abort(500, "Duplicated not Allow")
+
+    response = response_data[0] if is_raise_allows else response_data
     return jsonify(response)
 
 

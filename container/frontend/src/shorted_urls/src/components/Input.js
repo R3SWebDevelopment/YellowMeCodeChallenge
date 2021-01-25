@@ -14,10 +14,31 @@ export default class Input extends React.Component {
 
         this.submitURL = this.submitURL.bind(this);
         this.submitURLs = this.submitURLs.bind(this);
+        this.submitURLsFile = this.submitURLsFile.bind(this);
         this.inputURL = this.inputURL.bind(this);
         this.inputName = this.inputName.bind(this);
         this.inputURLs = this.inputURLs.bind(this);
         this.refreshList = this.refreshList.bind(this);
+    }
+
+    submitURLsFile(e){
+        e.preventDefault();
+        let file = e.target.files[0];
+        let textType = /text.*/
+        if (file.type.match(textType)) {
+            let reader = new FileReader();
+
+            reader.onload = function(e) {
+                let content = reader.result;
+                this.setState(
+                    {
+                        urls: content
+                    }
+                );
+            }.bind(this)
+
+            reader.readAsText(file);
+        }
     }
 
     submitURL(e){
@@ -48,7 +69,6 @@ export default class Input extends React.Component {
         urls.split("\n").forEach(
             row => {
                 let columns = row.split(",");
-                console.log(columns)
                 if(columns.length >= 2){
                     url_list.push(
                         {
@@ -59,10 +79,7 @@ export default class Input extends React.Component {
                 }
             }
         );
-        /*
-mexico, http://www.mexico.mx
-usa, http://www.usa.gov
-        */
+
         let data = {
             urls: url_list
         }
@@ -135,16 +152,16 @@ usa, http://www.usa.gov
                         </form>
                     </div>
                     <div className="form">
-                        <form  onSubmit={this.submitURLs}>
+                        <form onSubmit={this.submitURLs}>
                             <label htmlFor="urls">URLs:</label><br />
                             <textarea name="urls" id="urls" rows="5" cols="30" onChange={this.inputURLs}></textarea><br />
                             <input type="submit"/><br />
                         </form>
                     </div>
                     <div className="form">
-                        <form>
+                        <form onSubmit={this.submitURLs}>
                             <label htmlFor="url">URL:</label><br />
-                            <input type="file"/><br />
+                            <input type="file" onChange={this.submitURLsFile}/><br />
                             <input type="submit"/><br />
                         </form>
                     </div>
